@@ -1,13 +1,14 @@
 # bcourbage/homebrew-tap
 
-Homebrew tap for [unison-ui-mac](https://github.com/bcourbage/unison-ui-mac), a native macOS GUI for the [Unison File Synchronizer](https://github.com/bcruiser/unison).
+Homebrew tap for [unison-ui-mac](https://github.com/bcourbage/unison-ui-mac), a native macOS GUI for the [Unison File Synchronizer](https://github.com/bcpierce00/unison).
 
 ## Install
 
 ```sh
-brew tap bcourbage/tap
-brew install --cask unison-ui-mac
+brew install --cask bcourbage/tap/unison-ui-mac
 ```
+
+The fully-qualified cask name auto-adds the tap, so no separate `brew tap` step is needed. Homebrew also handles the macOS quarantine strip automatically; first launch is clean.
 
 Homebrew handles the macOS quarantine strip automatically; first launch is clean.
 
