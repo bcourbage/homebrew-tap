@@ -6,6 +6,7 @@ Homebrew tap for [unison-ui-mac](https://github.com/bcourbage/unison-ui-mac), a 
 
 ```sh
 brew install --cask bcourbage/tap/unison-ui-mac
+brew trust bcourbage/tap
 ```
 
 The fully-qualified cask name auto-adds the tap, so no separate `brew tap` step is needed. Homebrew also handles the macOS quarantine strip automatically; first launch is clean.
