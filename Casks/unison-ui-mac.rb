@@ -1,6 +1,6 @@
 cask "unison-ui-mac" do
-  version "0.1.1"
-  sha256 "d2b6e3b98e30bcd2b7159afe77aa927974d426e45cbd0714fea59c227c68c7ef"
+  version "0.1.2"
+  sha256 "c59c7bef2dd490ff2ea06ce942fd09e749cecb5785ec1365f4ead3f7a368ed1e"
 
   url "https://github.com/bcourbage/unison-ui-mac/releases/download/v#{version}/unison-ui-mac-#{version}.app.zip"
   name "Unison-UI-Mac"
