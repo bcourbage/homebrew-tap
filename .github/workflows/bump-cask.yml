@@ -1,0 +1,67 @@
+name: Bump unison-ui-mac cask
+
+# Official Homebrew approach: `brew livecheck` detects a newer
+# unison-ui-mac release (via the cask's `livecheck` stanza), then
+# `brew bump-cask-pr` opens the bump PR — it computes the SHA-256,
+# rewrites version+sha, and runs `brew audit`/`brew style`. We just
+# review and merge.
+#
+# Prerequisite (one-time, this repo's Settings → Actions → General →
+# Workflow permissions): "Allow GitHub Actions to create and approve
+# pull requests" must be enabled.
+#
+# Free to run: Actions minutes are unmetered on public repos, so the
+# daily macOS job costs nothing.
+
+on:
+  schedule:
+    - cron: "37 15 * * *"   # daily ~15:37 UTC
+  workflow_dispatch:          # manual "Run workflow" button
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  bump:
+    runs-on: macos-latest     # brew is preinstalled; bump-cask-pr needs it
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      HOMEBREW_NO_AUTO_UPDATE: "1"
+    steps:
+      - name: Authenticate git pushes with the workflow token
+        run: |
+          git config --global user.name  "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global \
+            url."https://x-access-token:${GH_TOKEN}@github.com/".insteadOf \
+            "https://github.com/"
+
+      - name: Tap (clones from GitHub origin)
+        run: brew tap bcourbage/tap
+
+      - name: Detect a newer release via livecheck
+        id: lc
+        run: |
+          json=$(brew livecheck --cask --newer-only --json bcourbage/tap/unison-ui-mac || echo '[]')
+          newest=$(echo "$json" | jq -r '.[0].version.latest // empty')
+          echo "newest=$newest" >> "$GITHUB_OUTPUT"
+          echo "livecheck newest: '${newest:-<already current>}'"
+
+      - name: Skip if a bump PR for this version is already open
+        id: guard
+        if: steps.lc.outputs.newest != ''
+        run: |
+          open=$(gh pr list --repo bcourbage/homebrew-tap --state open \
+                   --search "${{ steps.lc.outputs.newest }} in:title" \
+                   --json number -q '.[].number')
+          [ -n "$open" ] && echo "exists=true" >> "$GITHUB_OUTPUT" \
+                         || echo "exists=false" >> "$GITHUB_OUTPUT"
+
+      - name: Open the bump PR
+        if: steps.lc.outputs.newest != '' && steps.guard.outputs.exists == 'false'
+        run: |
+          brew bump-cask-pr --no-fork \
+            --version "${{ steps.lc.outputs.newest }}" \
+            bcourbage/tap/unison-ui-mac

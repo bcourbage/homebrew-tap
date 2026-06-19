@@ -7,6 +7,11 @@ cask "unison-ui-mac" do
   desc "GUI for the Unison File Synchronizer"
   homepage "https://github.com/bcourbage/unison-ui-mac"
 
+  livecheck do
+    url :url
+    strategy :github_latest
+  end
+
   depends_on macos: :sequoia
   depends_on arch: :arm64
 
