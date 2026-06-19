@@ -41,6 +41,12 @@ jobs:
       - name: Tap (clones from GitHub origin)
         run: brew tap bcourbage/tap
 
+      - name: Trust the tap
+        # The cask has a `sudo` postflight, so Homebrew treats the tap as
+        # untrusted and refuses to load it (for livecheck/audit) until
+        # trusted. Non-interactive in CI.
+        run: brew trust bcourbage/tap
+
       - name: Detect a newer release via livecheck
         id: lc
         run: |
