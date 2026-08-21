@@ -6,10 +6,9 @@ Homebrew tap for [unison-ui-mac](https://github.com/bcourbage/unison-ui-mac), a 
 
 ```sh
 brew install --cask bcourbage/tap/unison-ui-mac
-brew trust bcourbage/tap
 ```
 
-The fully-qualified cask name auto-adds the tap, so no separate `brew tap` step is needed. Homebrew also handles the macOS quarantine strip automatically; first launch is clean.
+The fully-qualified cask name auto-adds the tap, so no separate `brew tap` step is needed.
 
 ## Requirements
 
@@ -18,8 +17,12 @@ The fully-qualified cask name auto-adds the tap, so no separate `brew tap` step 
 
 ## Upgrading
 
+The app updates itself through Sparkle, so it stays current without Homebrew.
+Homebrew skips auto-updating casks on a normal `brew upgrade`; to force it to the
+latest cask anyway:
+
 ```sh
-brew upgrade --cask unison-ui-mac
+brew upgrade --cask --greedy-auto-updates unison-ui-mac
 ```
 
 ## Uninstall

@@ -17,7 +17,6 @@ cask "unison-ui-mac" do
   # The app is Developer ID-signed and notarized, so no quarantine strip is
   # needed, and it updates itself through Sparkle rather than through brew.
   auto_updates true
-
   depends_on macos: :sequoia
   depends_on arch: :arm64
 
