@@ -1,6 +1,8 @@
 cask "unison-ui-mac" do
-  version "0.4.2"
-  sha256 "d4379a0dca5fa7180e85a011289b4eeb29e98ced676ba5356093a993ed23c5e0"
+  version "0.5.0"
+  # Filled at release cut from the notarized asset:
+  #   shasum -a 256 unison-ui-mac-0.5.0.app.zip
+  sha256 "0000000000000000000000000000000000000000000000000000000000000000"
 
   url "https://github.com/bcourbage/unison-ui-mac/releases/download/v#{version}/unison-ui-mac-#{version}.app.zip"
   name "Unison-UI-Mac"
@@ -12,16 +14,14 @@ cask "unison-ui-mac" do
     strategy :github_latest
   end
 
+  # The app is Developer ID-signed and notarized, so no quarantine strip is
+  # needed, and it updates itself through Sparkle rather than through brew.
+  auto_updates true
+
   depends_on macos: :sequoia
   depends_on arch: :arm64
 
   app "unison-ui-mac.app"
-
-  postflight do
-    system_command "/usr/bin/xattr",
-                   args: ["-dr", "com.apple.quarantine", "/Applications/unison-ui-mac.app"],
-                   sudo: true
-  end
 
   zap trash: "~/Library/Preferences/net.courbage.unison-ui-mac.plist"
 end
