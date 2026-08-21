@@ -1,8 +1,6 @@
 cask "unison-ui-mac" do
   version "0.5.0"
-  # Filled at release cut from the notarized asset:
-  #   shasum -a 256 unison-ui-mac-0.5.0.app.zip
-  sha256 "0000000000000000000000000000000000000000000000000000000000000000"
+  sha256 "70bec9b74a3c27a1cc3c4d96b06b9ce0a160f438c4aa46537cb3bfdf42861693"
 
   url "https://github.com/bcourbage/unison-ui-mac/releases/download/v#{version}/unison-ui-mac-#{version}.app.zip"
   name "Unison-UI-Mac"
