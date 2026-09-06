@@ -20,5 +20,25 @@ cask "unison-ui-mac" do
 
   app "unison-ui-mac.app"
 
+  # The app's command-line launcher, linked as `unison`. Unison itself decides
+  # what an invocation means: `unison -ui graphic` opens the app, `unison -server`
+  # (what a remote peer runs over ssh) serves with the embedded engine, and
+  # anything else runs Unison's text interface. Requires a release that ships
+  # Contents/MacOS/cltool (0.7.0 or later); do not merge onto an earlier version.
+  binary "#{appdir}/unison-ui-mac.app/Contents/MacOS/cltool", target: "unison"
+
+  caveats <<~EOS
+    The app's command-line launcher is linked as #{HOMEBREW_PREFIX}/bin/unison, so
+    `unison -ui graphic` opens the app and `unison -server` runs its embedded Unison.
+
+    If the unison formula is linked, this install stops with "already a Binary".
+    Run `brew unlink unison` and retry, or install the app from the release zip to
+    keep the formula's command.
+
+    Commands arriving over ssh do not have #{HOMEBREW_PREFIX}/bin on their PATH.
+    Machines that sync to this Mac should set servercmd = #{HOMEBREW_PREFIX}/bin/unison
+    in their profile.
+  EOS
+
   zap trash: "~/Library/Preferences/net.courbage.unison-ui-mac.plist"
 end
