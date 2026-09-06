@@ -19,13 +19,14 @@ cask "unison-ui-mac" do
   depends_on arch: :arm64
 
   app "unison-ui-mac.app"
-
   # The app's command-line launcher, linked as `unison`. Unison itself decides
   # what an invocation means: `unison -ui graphic` opens the app, `unison -server`
   # (what a remote peer runs over ssh) serves with the embedded engine, and
   # anything else runs Unison's text interface. Requires a release that ships
   # Contents/MacOS/cltool (0.7.0 or later); do not merge onto an earlier version.
   binary "#{appdir}/unison-ui-mac.app/Contents/MacOS/cltool", target: "unison"
+
+  zap trash: "~/Library/Preferences/net.courbage.unison-ui-mac.plist"
 
   caveats <<~EOS
     The app's command-line launcher is linked as #{HOMEBREW_PREFIX}/bin/unison, so
@@ -39,6 +40,4 @@ cask "unison-ui-mac" do
     Machines that sync to this Mac should set servercmd = #{HOMEBREW_PREFIX}/bin/unison
     in their profile.
   EOS
-
-  zap trash: "~/Library/Preferences/net.courbage.unison-ui-mac.plist"
 end
