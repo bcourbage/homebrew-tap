@@ -3,9 +3,10 @@ cask "unison-ui" do
   sha256 "9ac51948be398731cc905a42ffa39966e3e410ceb6b1aabee0a50bb6bfe08366"
 
   url "https://github.com/bcourbage/unison-ui-mac/releases/download/v#{version}/unison-ui-mac-#{version}.app.zip"
+  name "Unison UI for macOS"
   name "Unison-UI-Mac"
   desc "GUI for the Unison File Synchronizer"
-  homepage "https://github.com/bcourbage/unison-ui-mac"
+  homepage "https://bcourbage.github.io/unison-ui-mac/"
 
   livecheck do
     url :url
