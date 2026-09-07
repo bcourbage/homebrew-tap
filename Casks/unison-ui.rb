@@ -1,0 +1,42 @@
+cask "unison-ui" do
+  version "0.7.0"
+  sha256 "9ac51948be398731cc905a42ffa39966e3e410ceb6b1aabee0a50bb6bfe08366"
+
+  url "https://github.com/bcourbage/unison-ui-mac/releases/download/v#{version}/unison-ui-mac-#{version}.app.zip"
+  name "Unison-UI-Mac"
+  desc "GUI for the Unison File Synchronizer"
+  homepage "https://github.com/bcourbage/unison-ui-mac"
+
+  livecheck do
+    url :url
+    strategy :github_latest
+  end
+
+  # Developer ID-signed and notarized; updates itself through Sparkle.
+  auto_updates true
+  # Upstream's Unison.app also links its launcher as bin/unison.
+  conflicts_with cask: "unison-app"
+  depends_on macos: :sequoia
+  depends_on arch: :arm64
+
+  app "unison-ui-mac.app"
+  # `unison -ui graphic` opens the app, `unison -server` serves with the embedded
+  # engine, anything else runs Unison's text interface. When the unison formula
+  # owns bin/unison, Homebrew keeps the formula's link and skips this one.
+  binary "#{appdir}/unison-ui-mac.app/Contents/MacOS/cltool", target: "unison"
+
+  # ~/Library/Application Support/Unison holds user-written profiles and sync
+  # archives shared with every Unison build, so it is deliberately not zapped.
+  zap trash: [
+    "~/Library/Caches/net.courbage.unison-ui-mac",
+    "~/Library/HTTPStorages/net.courbage.unison-ui-mac",
+    "~/Library/Preferences/net.courbage.unison-ui-mac.plist",
+    "~/Library/WebKit/net.courbage.unison-ui-mac",
+  ]
+
+  caveats <<~EOS
+    The app's command-line launcher is linked as #{HOMEBREW_PREFIX}/bin/unison.
+    If the unison formula is linked, Homebrew keeps the formula's command instead.
+    To give the command to the app: brew unlink unison && brew reinstall --cask unison-ui
+  EOS
+end

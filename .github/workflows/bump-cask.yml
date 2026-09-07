@@ -1,7 +1,7 @@
-name: Bump unison-ui-mac cask
+name: Bump unison-ui cask
 
 # Official Homebrew approach: `brew livecheck` detects a newer
-# unison-ui-mac release (via the cask's `livecheck` stanza), then
+# unison-ui-mac app release (via the cask's `livecheck` stanza), then
 # `brew bump-cask-pr` opens the bump PR — it computes the SHA-256,
 # rewrites version+sha, and runs `brew audit`/`brew style`. We just
 # review and merge.
@@ -44,7 +44,7 @@ jobs:
       - name: Detect a newer release via livecheck
         id: lc
         run: |
-          json=$(brew livecheck --cask --newer-only --json bcourbage/tap/unison-ui-mac || echo '[]')
+          json=$(brew livecheck --cask --newer-only --json bcourbage/tap/unison-ui || echo '[]')
           newest=$(echo "$json" | jq -r '.[0].version.latest // empty')
           echo "newest=$newest" >> "$GITHUB_OUTPUT"
           echo "livecheck newest: '${newest:-<already current>}'"
@@ -64,4 +64,4 @@ jobs:
         run: |
           brew bump-cask-pr --no-fork \
             --version "${{ steps.lc.outputs.newest }}" \
-            bcourbage/tap/unison-ui-mac
+            bcourbage/tap/unison-ui

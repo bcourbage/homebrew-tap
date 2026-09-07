@@ -5,7 +5,7 @@ Homebrew tap for [unison-ui-mac](https://github.com/bcourbage/unison-ui-mac), a 
 ## Install
 
 ```sh
-brew install --cask bcourbage/tap/unison-ui-mac
+brew install --cask bcourbage/tap/unison-ui
 ```
 
 The fully-qualified cask name auto-adds the tap, so no separate `brew tap` step is needed.
@@ -22,15 +22,15 @@ Homebrew skips auto-updating casks on a normal `brew upgrade`; to force it to th
 latest cask anyway:
 
 ```sh
-brew upgrade --cask --greedy-auto-updates unison-ui-mac
+brew upgrade --cask --greedy-auto-updates unison-ui
 ```
 
 ## Uninstall
 
 ```sh
-brew uninstall --cask unison-ui-mac
+brew uninstall --cask unison-ui
 # Also remove preferences:
-brew uninstall --cask --zap unison-ui-mac
+brew uninstall --cask --zap unison-ui
 ```
 
 See the [main repo](https://github.com/bcourbage/unison-ui-mac) for documentation, changelog, and bug reports.
