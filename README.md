@@ -1,6 +1,6 @@
 # bcourbage/homebrew-tap
 
-Homebrew tap for [unison-ui-mac](https://github.com/bcourbage/unison-ui-mac), a native macOS GUI for the [Unison File Synchronizer](https://github.com/bcpierce00/unison).
+Homebrew tap for [unison-ui-mac](https://bcourbage.github.io/unison-ui-mac/), a native macOS GUI for the [Unison File Synchronizer](https://github.com/bcpierce00/unison).
 
 ## Install
 
