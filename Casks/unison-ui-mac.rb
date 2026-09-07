@@ -22,22 +22,27 @@ cask "unison-ui-mac" do
   # The app's command-line launcher, linked as `unison`. Unison itself decides
   # what an invocation means: `unison -ui graphic` opens the app, `unison -server`
   # (what a remote peer runs over ssh) serves with the embedded engine, and
-  # anything else runs Unison's text interface. Requires a release that ships
+  # anything else runs Unison's text interface. Occupant of bin/unison at install
+  # (Homebrew 6.0.22, cask/artifact/symlinked.rb): a link into this app is
+  # accepted; a formula's link is skipped with a warning; another resolving
+  # target fails with "already a Binary"; a dangling link is replaced. Requires a release that ships
   # Contents/MacOS/cltool (0.7.0 or later); do not merge onto an earlier version.
   binary "#{appdir}/unison-ui-mac.app/Contents/MacOS/cltool", target: "unison"
 
   zap trash: "~/Library/Preferences/net.courbage.unison-ui-mac.plist"
 
   caveats <<~EOS
-    The app's command-line launcher is linked as #{HOMEBREW_PREFIX}/bin/unison, so
+    When Homebrew links the app's command-line launcher as #{HOMEBREW_PREFIX}/bin/unison,
     `unison -ui graphic` opens the app and `unison -server` runs its embedded Unison.
 
-    If the unison formula is linked, this install stops with "already a Binary".
-    Run `brew unlink unison` and retry, or install the app from the release zip to
-    keep the formula's command.
+    If the unison formula is linked, Homebrew keeps the formula's command and skips
+    that link with a warning. #{HOMEBREW_PREFIX}/bin/unison, and any servercmd that
+    names it, then run the formula, not this app. To give the command to the app,
+    run `brew unlink unison` and then `brew reinstall --cask unison-ui-mac`.
 
-    Commands arriving over ssh do not have #{HOMEBREW_PREFIX}/bin on their PATH.
-    Machines that sync to this Mac should set servercmd = #{HOMEBREW_PREFIX}/bin/unison
-    in their profile.
+    Machines that sync to this Mac should set servercmd in their profile to the full
+    path of the executable they intend to run, checked with readlink. The PATH an
+    incoming ssh command receives depends on this Mac's SSH and shell configuration.
+    Details: https://github.com/bcourbage/unison-ui-mac/blob/main/MANUAL.md#repair-and-migration
   EOS
 end
