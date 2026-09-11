@@ -1,6 +1,6 @@
 cask "unison-ui" do
-  version "0.8.0"
-  sha256 "1f72bdda2b07696d944b7adc28064b0e6e58a1764febe2d6022dd1352baa3561"
+  version "0.9.0"
+  sha256 "3cee4a8533e79ca9a9b695974fc7ddf10fa7c8f9ef42be7c1db7e99954724fd6"
 
   url "https://github.com/bcourbage/unison-ui-mac/releases/download/v#{version}/unison-ui-mac-#{version}.app.zip"
   name "Unison UI for macOS"
@@ -21,9 +21,11 @@ cask "unison-ui" do
   depends_on arch: :arm64
 
   app "unison-ui-mac.app"
-  # `unison -ui graphic` opens the app, `unison -server` serves with the embedded
-  # engine, anything else runs Unison's text interface. When the unison formula
-  # owns bin/unison, Homebrew keeps the formula's link and skips this one.
+  # `unison -ui graphic` opens the app and `unison -server` serves with the
+  # embedded engine; a bare `unison <profile>` follows the Default interface
+  # preference (Graphical by default), and `-ui text` runs the text interface.
+  # When the unison formula owns bin/unison, Homebrew keeps the formula's link
+  # and skips this one.
   binary "#{appdir}/unison-ui-mac.app/Contents/MacOS/cltool", target: "unison"
 
   # ~/Library/Application Support/Unison holds user-written profiles and sync
