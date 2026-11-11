@@ -41,10 +41,23 @@ jobs:
       - name: Tap (clones from GitHub origin)
         run: brew tap bcourbage/tap
 
+      # Current Homebrew refuses to load a cask from a non-official tap that is
+      # not trusted ("Refusing to load cask ... from untrusted tap"), which made
+      # livecheck fail. This is our own tap and the job runs from it, so trust it.
+      - name: Trust this tap
+        run: brew trust bcourbage/tap
+
       - name: Detect a newer release via livecheck
         id: lc
         run: |
-          json=$(brew livecheck --cask --newer-only --json bcourbage/tap/unison-ui || echo '[]')
+          # A livecheck failure must fail the job. It used to be swallowed
+          # (`|| echo '[]'`), so a broken livecheck looked like "already current"
+          # and no bump PR was ever opened. `brew livecheck --newer-only` exits 0
+          # with `[]` when nothing is newer.
+          set -euo pipefail
+          json=$(brew livecheck --cask --newer-only --json bcourbage/tap/unison-ui)
+          echo "livecheck output: $json"
+          echo "$json" | jq -e 'type == "array"' >/dev/null
           newest=$(echo "$json" | jq -r '.[0].version.latest // empty')
           echo "newest=$newest" >> "$GITHUB_OUTPUT"
           echo "livecheck newest: '${newest:-<already current>}'"
